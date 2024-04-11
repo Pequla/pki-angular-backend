@@ -7,6 +7,13 @@ const repo = AppDataSource.getRepository(Ticket)
 export class TicketService {
     static async getAllTickets() {
         const data = await repo.find({
+            select: {
+                ticketId: true,
+                flightId: true,
+                airlineId: true,
+                return: true,
+                createdAt: true
+            },
             where: {
                 deletedAt: IsNull()
             },
@@ -15,7 +22,6 @@ export class TicketService {
             }
         })
 
-        data.forEach(e => delete e.deletedAt)
         return data
     }
 
