@@ -3,9 +3,9 @@ import { TicketService } from "../services/ticket.service";
 
 export const TicketRouter = Router()
 
-TicketRouter.get('/', async (req, res) => {
+TicketRouter.get('/', async (req: any, res) => {
     try {
-        res.json(await TicketService.getAllTickets())
+        res.json(await TicketService.getAllTickets(req.user))
     } catch (e) {
         res.status(500).json({
             message: e.message,
@@ -14,9 +14,9 @@ TicketRouter.get('/', async (req, res) => {
     }
 })
 
-TicketRouter.post('/', async (req, res) => {
+TicketRouter.post('/', async (req: any, res) => {
     try {
-        res.json(await TicketService.createTicket(req.body))
+        res.json(await TicketService.createTicket(req.user, req.body))
     } catch (e) {
         res.status(500).json({
             message: e.message,
