@@ -30,6 +30,27 @@ export class UserService {
         throw new Error('Bad credentials')
     }
 
+    static async register(model: LoginModel) {
+        const data = await repo.findOne({
+            select: {
+                userId: true
+            },
+            where: {
+                email: model.email
+            }
+        })
+
+        if (data != undefined)
+            throw new Error('User already exists')
+
+        const hashed = await bcrypt.hash(model.password, 12)
+        await repo.save({
+            email: model.email,
+            password: hashed,
+            createdAt: new Date()
+        })
+    }
+
     static async refresh(token: string) {
         const decoded: any = jwt.verify(token, refreshSecret)
         const email = decoded.email
@@ -54,7 +75,7 @@ export class UserService {
     }
 
     static async verifyToken(req, res, next) {
-        if (req.path == '/api/user/login' || req.path == '/api/user/refresh') {
+        if (req.path == '/api/user/login' || req.path == '/api/user/refresh' || req.path == '/api/user/register') {
             next()
             return
         }

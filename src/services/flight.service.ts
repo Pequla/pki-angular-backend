@@ -9,7 +9,17 @@ const client = axios.create({
 
 export class FlightService {
     static async getFlightById(id: number) {
-        const rsp =  await client.get(`/${id}`)
+        const rsp = await client.get(`/${id}`)
+        return rsp.data
+    }
+
+    static async getFlightsByIds(ids: number[]) {
+        const rsp = await client.request({
+            url: '/list',
+            method: 'post',
+            data: ids
+        })
+
         return rsp.data
     }
 }

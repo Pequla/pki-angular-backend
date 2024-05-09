@@ -4,7 +4,6 @@ import morgan from 'morgan'
 import { AppDataSource } from './db'
 import { AirlineRoute } from './routes/airline.route'
 import { TicketRouter } from './routes/ticket.route'
-import { FlightRoute } from './routes/flight.route'
 import { UserService } from './services/user.service'
 import { UserRoute } from './routes/user.route'
 import { configDotenv } from 'dotenv'
@@ -25,6 +24,5 @@ AppDataSource.initialize()
 
 app.use(UserService.verifyToken)
 app.use('/api/user', UserRoute)
-app.use('/api/flight', FlightRoute)
 app.use('/api/airline', AirlineRoute)
 app.use('/api/ticket', TicketRouter)

@@ -14,6 +14,17 @@ UserRoute.post('/login', async (req, res) => {
     }
 })
 
+UserRoute.post('/register', async (req, res) => {
+    try {
+        res.json(await UserService.register(req.body))
+    } catch (e) {
+        res.status(500).json({
+            message: e.message,
+            timestamp: new Date()
+        })
+    }
+})
+
 UserRoute.post('/refresh', async (req, res) => {
     try {
         const authHeader = req.headers['authorization']
