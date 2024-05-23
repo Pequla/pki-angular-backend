@@ -4,7 +4,8 @@
   "description": "Backend izvorni kod sa predmeta Razvoj Softvera",
   "main": "./src/index.ts",
   "scripts": {
-    "dev": "nodemon ./src/index.ts"
+    "dev": "nodemon ./src/index.ts",
+    "build": "tsc"
   },
   "author": "Petar Kresoja",
   "license": "MIT",
