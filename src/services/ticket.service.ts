@@ -29,15 +29,44 @@ export class TicketService {
         })
 
         // Fetch all flights by Ticket Ids
-        const flights : FlightModel[] = await FlightService.getFlightsByIds(
+        const flights: FlightModel[] = await FlightService.getFlightsByIds(
             data.map(t => t.flightId)
         )
 
         // Map flights to tickets
         for (const ticket of data) {
-            (ticket as any).flight = flights.find(f=>f.id === ticket.flightId)
+            (ticket as any).flight = flights.find(f => f.id === ticket.flightId)
         }
 
+        return data
+    }
+
+    static async getTicketById(id: number, auth: any) {
+        const data = await repo.findOne({
+            select: {
+                ticketId: true,
+                flightId: true,
+                airlineId: true,
+                return: true,
+                createdAt: true
+            },
+            where: {
+                ticketId: id,
+                user: {
+                    email: auth.email
+                },
+                deletedAt: IsNull()
+            },
+            relations: {
+                airline: true
+            }
+        })
+
+        if (data == undefined)
+            throw new Error("NOT_FOUND")
+
+        const flight = await FlightService.getFlightById(data.flightId);
+        (data as any).flight = flight
         return data
     }
 

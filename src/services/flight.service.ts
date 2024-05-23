@@ -1,4 +1,5 @@
 import axios from "axios";
+import { FlightModel } from "../models/flight.model";
 
 const client = axios.create({
     baseURL: 'https://flight.pequla.com/api/flight',
@@ -8,12 +9,12 @@ const client = axios.create({
 })
 
 export class FlightService {
-    static async getFlightById(id: number) {
+    static async getFlightById(id: number): Promise<FlightModel> {
         const rsp = await client.get(`/${id}`)
         return rsp.data
     }
 
-    static async getFlightsByIds(ids: number[]) {
+    static async getFlightsByIds(ids: number[]): Promise<FlightModel[]> {
         const rsp = await client.request({
             url: '/list',
             method: 'post',

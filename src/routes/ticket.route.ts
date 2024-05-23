@@ -14,6 +14,18 @@ TicketRouter.get('/', async (req: any, res) => {
     }
 })
 
+TicketRouter.get('/:id', async (req: any, res) => {
+    try {
+        const id = Number.parseInt(req.params.id)
+        res.json(await TicketService.getTicketById(id, req.user))
+    } catch (e) {
+        res.status(500).json({
+            message: e.message,
+            timestamp: new Date()
+        })
+    }
+})
+
 TicketRouter.post('/', async (req: any, res) => {
     try {
         res.json(await TicketService.createTicket(req.user, req.body))
