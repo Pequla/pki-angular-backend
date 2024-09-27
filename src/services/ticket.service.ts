@@ -71,6 +71,13 @@ export class TicketService {
     }
 
     static async createTicket(auth: any, ticket: Ticket) {
+        const flight = await FlightService.getFlightById(ticket.flightId)
+        const scheduled = new Date(flight.scheduledAt)
+        const now = new Date()
+        if (scheduled <= now) {
+            throw Error('FLIGHT_OUTDATED')
+        }
+
         const user = await UserService.getByEmail(auth.email)
         ticket.userId = user.userId
         ticket.deletedAt = null
